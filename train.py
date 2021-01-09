@@ -63,19 +63,22 @@ def train(opt):
             global_model.load_state_dict(torch.load(file_))
 
     optimizer = GlobalAdam(global_model.parameters(), lr=opt.lr)
-    processes = []
-    for index in range(opt.num_processes):
-        if index == 0:
-            process = mp.Process(target=local_train, args=(index, opt, global_model, optimizer, True))
-        else:
-            process = mp.Process(target=local_train, args=(index, opt, global_model, optimizer))
-        process.start()
-        processes.append(process)
-    process = mp.Process(target=local_test, args=(opt.num_processes, opt, global_model))
-    process.start()
-    processes.append(process)
-    for process in processes:
-        process.join()
+    # processes = []
+    # for index in range(opt.num_processes):
+    #     if index == 0:
+    #         process = mp.Process(target=local_train, args=(index, opt, global_model, optimizer, True))
+    #     else:
+    #         process = mp.Process(target=local_train, args=(index, opt, global_model, optimizer))
+    #     process.start()
+    #     processes.append(process)
+    # process = mp.Process(target=local_test, args=(opt.num_processes, opt, global_model))
+    # process.start()
+    # processes.append(process)
+    # for process in processes:
+    #     process.join()
+
+    local_train(0, opt, global_model, optimizer, True)
+    # local_test(opt.num_processes, opt, global_model)
 
 
 if __name__ == "__main__":

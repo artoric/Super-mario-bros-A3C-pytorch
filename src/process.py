@@ -2,6 +2,7 @@
 @author: Viet Nguyen <nhviet1009@gmail.com>
 """
 
+import time
 import torch
 from src.env import create_train_env
 from src.model import ActorCritic
@@ -33,7 +34,7 @@ def local_train(index, opt, global_model, optimizer, save=False):
             if curr_episode % opt.save_interval == 0 and curr_episode > 0:
                 torch.save(global_model.state_dict(),
                            "{}/a3c_super_mario_bros_{}_{}".format(opt.saved_path, opt.world, opt.stage))
-            print("Process {}. Episode {}".format(index, curr_episode))
+            print(time.time(), "Process {}. Episode {}".format(index, curr_episode))
         curr_episode += 1
         local_model.load_state_dict(global_model.state_dict())
         if done:
